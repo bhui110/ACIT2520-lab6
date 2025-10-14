@@ -1,5 +1,7 @@
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { PassportStrategy } from '../../interfaces/index';
+import { Request } from "express";
+import passport from 'passport';
 
 const githubStrategy: GitHubStrategy = new GitHubStrategy(
     {
@@ -10,7 +12,7 @@ const githubStrategy: GitHubStrategy = new GitHubStrategy(
     },
     
     /* FIX ME 😭 */
-    async (req: any, accessToken: any, refreshToken: any, profile: any, done: any) => {},
+    async (req: Request, accessToken: String, refreshToken: String, profile: passport.Profile, done: (err?: Error | null, profile?: any) => void) => {},
 );
 
 const passportGitHubStrategy: PassportStrategy = {
