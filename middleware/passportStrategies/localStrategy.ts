@@ -33,9 +33,6 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-/*
-FIX ME (types) 😭
-*/
 passport.deserializeUser(function (id: number, done) {
   let user = getUserById(id);
   if (user) {
