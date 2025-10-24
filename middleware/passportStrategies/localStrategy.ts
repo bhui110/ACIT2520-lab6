@@ -4,17 +4,6 @@ import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/user
 import { PassportStrategy } from '../../interfaces/index';
 import { userModel } from "../../models/userModel";
 
-declare global {
-  namespace Express {
-    interface User {
-      id: number;
-      name: string;
-      email: string;
-      password: string;
-    }
-  }
-}
-
 const localStrategy = new LocalStrategy(
   {
     usernameField: "email",

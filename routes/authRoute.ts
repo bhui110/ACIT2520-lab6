@@ -1,6 +1,6 @@
 import express from "express";
 import passport from 'passport';
-import { forwardAuthenticated } from "../middleware/checkAuth";
+import { ensureAdmin, forwardAuthenticated } from "../middleware/checkAuth";
 
 declare module "express-session" {
   interface SessionData {
@@ -33,4 +33,17 @@ router.get("/logout", (req, res) => {
   res.redirect("/auth/login");
 });
 
+router.get('/github',
+  passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('F/dashboard');
+  });
+  
+router.get("/admin", ensureAdmin, (req, res) => {
+  res.render("admin", { user: req.user });
+});
 export default router;
