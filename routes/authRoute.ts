@@ -40,10 +40,12 @@ router.get('/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect('F/dashboard');
+    res.redirect('/dashboard');
   });
-  
+
 router.get("/admin", ensureAdmin, (req, res) => {
-  res.render("admin", { user: req.user });
+  res.render("admin", {
+    user: req.user
+  });
 });
 export default router;
