@@ -23,5 +23,5 @@ function isUserValid(user: any, password: string) {
 
 export {
   getUserByEmailIdAndPassword,
-  getUserById,
+  getUserById
 };

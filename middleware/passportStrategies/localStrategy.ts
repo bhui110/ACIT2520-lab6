@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { getUserByEmailIdAndPassword, getUserById } from "../../controllers/userController";
 import { PassportStrategy } from '../../interfaces/index';
+import { userModel } from "../../models/userModel";
 
 declare global {
   namespace Express {
@@ -20,12 +21,21 @@ const localStrategy = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
-    const user = getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-        message: "Your login details are not valid. Please try again",
-      });
+    try {
+      const user = getUserByEmailIdAndPassword(email, password);
+      if (user) {
+        return done(null, user);
+      }
+      const userByEmail = userModel.findOne(email);
+      if (userByEmail) {
+        return done(null, false, { message: "Incorrect password. Please try again." });
+      }
+    } catch (err: any) {
+      if (err.message.includes("Couldn't find user with email")) {
+        return done(null, false, { message: `Couldn't find user with email: ${email}` });
+      }
+      return done(err);
+    }
   }
 );
 
